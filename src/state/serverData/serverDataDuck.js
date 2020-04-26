@@ -5,18 +5,20 @@ export const types = {
     ADD_CATEGORIES: `${duckName}/ADD_CATEGORIES`,
     ADD_TAGS: `${duckName}/ADD_TAGS`,
     ADD_PAGES: `${duckName}/ADD_PAGES`,
-    ADD_LATEST_POSTS: `${duckName}/ADD_LATEST_POSTS`,
+    ADD_DISPLAY_POSTS: `${duckName}/ADD_DISPLAY_POSTS`,
     ADD_CURRENT_POST: `${duckName}/ADD_CURRENT_POST`,
     ADD_CURRENT_CATEGORY: `${duckName}/ADD_CURRENT_CATEGORY`,
+    ADD_PRIMARY_MENU: `${duckName}/ADD_PRIMARY_MENU`,
 }
 
 export const creators = {
     addCategories: (data)=>({type: types.ADD_CATEGORIES, payload: data }),
-    addLatestPosts: (data)=>({type: types.ADD_LATEST_POSTS, payload: data}),
+    addDisplayPosts: (data)=>({type: types.ADD_DISPLAY_POSTS, payload: data}),
     addTags: (data)=>({type: types.ADD_TAGS, payload: data}),
     addPages: (data)=>({type: types.ADD_PAGES, payload: data}),
     addCurrentPost: (data)=>({type: types.ADD_CURRENT_POST, payload: data}),
     addCurrentCategory: (data)=>({type: types.ADD_CURRENT_CATEGORY, payload: data}),
+    addPrimaryMenu: (data)=>({type: types.ADD_PRIMARY_MENU, payload: data})
 }
 
 
@@ -24,9 +26,10 @@ export const defaultState = {
     categories: [],
     tags: [],
     pages: [],
-    latestPosts: [],
+    displayPosts: [],
     currentPost: {},
-    currentCategory: {}
+    currentCategory: {},
+    primaryMenu: []
 };
 
 
@@ -42,14 +45,17 @@ export default (state = defaultState, action )=>{
         case types.ADD_TAGS: 
             newState.tags = action.payload;
             return newState;
-        case types.ADD_LATEST_POSTS: 
-            newState.latestPosts = action.payload;
+        case types.ADD_DISPLAY_POSTS: 
+            newState.displayPosts = action.payload;
             return newState;
         case types.ADD_CURRENT_CATEGORY: 
             newState.currentCategory = action.payload;
             return newState;
         case types.ADD_CURRENT_POST:
             newState.currentPost = action.payload;
+            return newState;
+        case types.ADD_PRIMARY_MENU: 
+            newState.primaryMenu = [...action.payload];
             return newState;
         default: 
             return newState;

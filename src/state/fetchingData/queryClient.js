@@ -1,7 +1,8 @@
 import ApolloClient, { gql } from 'apollo-boost';
+import settings from '../../appSettings';
 
 const client = new ApolloClient({
-    uri: "https://dedex-video-downloader.com/graphql"
+    uri: settings.api
 });
 
 export default client;

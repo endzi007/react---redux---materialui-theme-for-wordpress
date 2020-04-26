@@ -10,7 +10,7 @@ export const getAllPosts = (props)=> `
 `;
 
 export const getPostsByCategoryName = (fields, categoryName)=> `
-  posts (where:{categoryName: ${categoryName} }) {
+  posts (where:{categoryName: "${categoryName}" }) {
       nodes {
         ${fields}
       }
