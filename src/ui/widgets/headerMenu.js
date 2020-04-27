@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { useSelector } from "react-redux";
-import { makeStyles, Typography, Grid, Card, CardContent, List, ListItem, ListItemText } from "@material-ui/core";
+import { makeStyles, Typography, Grid, Card, CardContent, Button } from "@material-ui/core";
 import { ExpandMore, ArrowRightAlt } from "@material-ui/icons";
 
 const styles = makeStyles(theme =>({
@@ -18,27 +18,51 @@ const styles = makeStyles(theme =>({
         position: "absolute",
         right: "8px",
         top: 0,
-        transform: "translateY(calc(100% - 8px))",
+        transform: "translateY(62px)",
         minWidth: "150px",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        transition: "all 0.7s linear",
+        "&:hover":{
+            cursor: "pointer"
+        }
     },
     menuitem: {
         display: "flex",
-        padding: theme.spacing(1),
-        alignSelf: "stretch"
+        padding: theme.spacing(1)
     },
     dropdownitem: {
-        display: "flex",
-        padding: theme.spacing(1),
-        alignSelf: "stretch"
+        display: "flex"
     }
 }))
+//reducer
+
 
 export default (props)=>{
-    const [ displayMenu, setDisplayMenu ] = useState([])
     let menuItems = useSelector((store)=>{
         return store.serverData.primaryMenu
+    });
+    const menuReducer = (state, action)=>{
+        let newState = {...state};
+        switch (action.type) {
+            case "DISPLAY_MENU":
+                newState.displayMenu = action.payload;
+                break;
+            case "DROPDOWN_CATEGORY":
+                newState.dropdownCategory = action.payload;    
+                break;
+            case "SHOW_DROPDOWN":
+                newState.showDropdown = !newState.showDropdown;
+                break;
+            default:
+                return newState;
+        }
+        return newState;
+    }
+    const [ state, dispatch ] = useReducer( menuReducer, {
+        displayMenu: [],
+        dropdownCategory: "",
+        showDropdown: false,
     });
 
     useEffect(()=>{
@@ -46,18 +70,17 @@ export default (props)=>{
             let icon = ""
             if(item.parent === null){
                 if("childItems" in item){
-                    console.log(item, "item")
                     if(item.childItems.nodes !== undefined && item.childItems.nodes.length > 0){
                         icon = <ExpandMore/>;
                     }
                 }
-                return <MenuItem key={item.id} label={item.label} url={item.url} icon={icon}></MenuItem>
+                return <MenuItem key={item.id} label={item.label} url={item.url} icon={icon} state={state} dispatch={dispatch}></MenuItem>
             }
         })
-        setDisplayMenu([...temp]);
+        dispatch({type: "DISPLAY_MENU", payload: temp});
     }, [menuItems])
 
-    return <MenuBar> {displayMenu} </MenuBar>
+return <MenuBar> {state.displayMenu}{<DropDown state={state} dispatch={dispatch.bind(this)} show={state.showDropdown} category={state.dropdownCategory}/>}</MenuBar>
 }
 
 
@@ -68,18 +91,45 @@ const MenuBar = (props)=>{
 
 const DropDown = (props)=>{
     const classes = styles();
-    const showItems = useSelector((store)=> store.serverData.primaryMenu);
+    const [ dropdownItems, setDropdownItems ] = useState([[]]);
+    const menuItems = useSelector((state)=> state.serverData.primaryMenu)
+    const handleBackClick = (e)=>{
+        let temp = [...dropdownItems];
+        temp.pop();
+        setDropdownItems(temp);
+    }
+    useEffect(()=>{
+        if(props.show){
+            let temp = [];
+            menuItems.forEach((item)=>{
+                let icon = false; 
+                if("childItems" in item && item.childItems.nodes !== undefined){
+                    if(item.childItems.nodes.length >= 0){
+                        icon = true
+                    }
+                } else {
+                    icon = false
+                }
+                if(item.parent === props.category){
+                    temp.push(<DropDownItem  
+                        key={item.id} 
+                        label={item.label} 
+                        url={item.url} 
+                        dispatch={props.dispatch}
+                        state={props.state}
+                        icon={icon}></DropDownItem>)
+                }
+            })
+            setDropdownItems([...dropdownItems, temp]);
+        } else {
+            setDropdownItems(dropdownItems.slice(0,2))
+        }
+    }, [props.category])
     return (
         <Card className={classes.dropdown} style={{display: props.show? "flex": "none"}}>
             <CardContent>
-                {
-                    showItems.map((item)=>{
-                        if(item.parent === props.category){
-                        return <DropDownItem  key={item.id} label={item.label} url={item.url} icon={<ArrowRightAlt/>}></DropDownItem>
-                        }
-                    })
-                }
-
+                <Button disabled={dropdownItems.length <= 2? true: false} onClick={handleBackClick}>Go back</Button>
+                {dropdownItems[dropdownItems.length-1]}
             </CardContent>
        </Card>
     )
@@ -87,19 +137,15 @@ const DropDown = (props)=>{
 
 const MenuItem = (props)=>{
     const classes = styles();
-    const [showDropdown, setShowDropdown ] = useState(false);
-    const [ catToShow, setCatToShow ] = useState("");
     return <div className={classes.menuitem}><Typography onClick={(e)=>{
-        setShowDropdown(!showDropdown)
-        setCatToShow(e.currentTarget.innerText);
-    }}variant="body1">{props.label}</Typography>{props.icon}<DropDown show={showDropdown} category={catToShow}/></div>
+        props.dispatch({type: "SHOW_DROPDOWN", payload: "" })
+        props.dispatch({type: "DROPDOWN_CATEGORY", payload: e.currentTarget.innerText })
+    }} variant="body1">{props.label}</Typography>{props.icon}</div>
 }
 
 const DropDownItem = (props)=>{
     const classes = styles();
-    const [showDropdown, setShowDropdown ] = useState(false);
-    const [ catToShow, setCatToShow ] = useState("");
-    return <div className={classes.dropdownitem}><Typography onClick={(e)=>{
-        setCatToShow(e.currentTarget.innerText);
-    }} variant="body1">{props.label}</Typography>{props.icon}<DropDown show={showDropdown} category={catToShow}/></div>
+    return <div className={classes.dropdownitem}><Typography variant="body1">{props.label}</Typography>{props.icon? <ArrowRightAlt onClick = {()=>{
+        props.dispatch({type: "DROPDOWN_CATEGORY", payload: props.label});
+    }} />: ""}</div>
 }

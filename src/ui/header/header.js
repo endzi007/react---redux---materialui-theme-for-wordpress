@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, makeStyles, Grid } from "@material-ui/core";
-import HeaderNavBar from "../widgets/headerMenu";
+import DropdownMenu from "../widgets/dropdownMenu";
 
 
 
@@ -74,7 +74,7 @@ const Header = ()=>{
                 </Grid>
                 <Grid item sm="9">
                     <Grid container>
-                        <HeaderNavBar />
+                        <DropdownMenu />
                     </Grid>
                 </Grid>
             </Grid>

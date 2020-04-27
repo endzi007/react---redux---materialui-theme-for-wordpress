@@ -13,6 +13,7 @@ import { getAllPosts, getPostsByCategoryName} from "./state/fetchingData/postQue
 import { getMenuBySlug } from "./state/fetchingData/menuQueries";
 import { creators as serverDataActions } from "./state/serverData/serverDataDuck";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
+import SinglePost from "./ui/pageTemplates/singlePost";
 
 
 const styles = makeStyles(theme=>({
@@ -32,11 +33,11 @@ function App() {
      sendQueryRequest([getAllCategories("name id")]).then((data)=>{
       dispatch(serverDataActions.addCategories(data.data));
     }) 
-/*
+
     sendQueryRequest([getAllPages("title content id"), getAllTags("name")]).then((data)=>{
       dispatch(serverDataActions.addPages(data.data));
       dispatch(serverDataActions.addTags(data.data));
-    })  */
+    }) 
   
     sendQueryRequest([getMenuBySlug("label url id", "primary-menu")]).then((data)=>{
       dispatch(serverDataActions.addPrimaryMenu(data.data))
@@ -51,10 +52,10 @@ function App() {
           <CssBaseline />
           <Header />
             <Switch>
-                <Route path="/"> <Content /></Route>
-                <Route exact path="/category:id"></Route>
-                <Route exact path="/post:id"></Route>
-                <Route exact path="/tag:id"></Route>
+                <Route path="/" exact> <Content /></Route>
+                <Route exact path="/category/:id" exact><Content /></Route>
+                <Route exact path="/post/:id"><SinglePost /></Route>
+                <Route exact path="/tag/:id" exact><Content /></Route>
             </Switch>
           <Footer />
         </Router>

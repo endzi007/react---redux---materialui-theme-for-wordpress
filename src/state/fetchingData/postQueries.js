@@ -16,3 +16,14 @@ export const getPostsByCategoryName = (fields, categoryName)=> `
       }
   }
 `;
+
+export const getPostByTitle = (fields, title)=> `
+  posts (where:{title: "${title}" }) {
+    edges {
+      node {
+        ${fields}
+      }
+    }
+  }
+`;
+

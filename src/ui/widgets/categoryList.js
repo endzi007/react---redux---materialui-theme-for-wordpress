@@ -17,7 +17,7 @@ const CategoriesWidget = ()=>{
 
     const handleSelect = (event, nodeIds) => {
         if(!event.target.classList.contains("MuiSvgIcon-root")){
-            history.push(nodeIds);
+            history.push(`/category/${nodeIds}`);
         }
         setSelected(nodeIds);
 

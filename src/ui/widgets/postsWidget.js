@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Typography, Link, makeStyles, Card, CardMedia, CardContent, CardActions, Button } from "@material-ui/core";
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 const PostWidget = (props)=>{
     const posts = useSelector(store => store.serverData[props.displayCategory]);
@@ -30,16 +31,18 @@ const singlePostStyles = makeStyles((theme)=>({
     }
 }))
 const SinglePost = (props)=>{
-    const {id, title, excerpt, featuredImage } = props;
+    const {id, title, excerpt, featuredImage, databaseId } = props;
     const classes = singlePostStyles();
-    
+    const history = useHistory()
     return <Grid item>
             <Card className={classes.root}>
                 <CardMedia image={featuredImage !== null ? featuredImage.sourceUrl : "https://www.northernlightspizza.com/wp-content/uploads/2017/01/image-placeholder.jpg"}/>
                 <CardContent>
                     <Typography variant="h6">{title}</Typography>
                     <Typography variant="body1" dangerouslySetInnerHTML={{__html: `${excerpt.substr(0, 200)}...`}}/>
-                    <Button className={classes.button} size="small" >Read More...</Button>
+                    <Button onClick={()=>{
+                        history.push(`/post/${title}`)
+                    }} className={classes.button} size="small" >Read More...</Button>
                 </CardContent>
             </Card>
 
