@@ -4,12 +4,12 @@ import './App.css';
 import Header from "./ui/header/header";
 import Footer from "./ui/footer/footer";
 import Content from "./ui/content/content";
+import SearchPage from "./ui/pageTemplates/searchPage";
 import { makeStyles, CssBaseline } from '@material-ui/core';
 import { sendQueryRequest } from "./state/fetchingData/queryClient";
 import { getAllCategories } from "./state/fetchingData/categoryQueries";
 import { getAllPages } from "./state/fetchingData/pageQueries";
 import { getAllTags } from "./state/fetchingData/tagQueries";
-import { getAllPosts, getPostsByCategoryName} from "./state/fetchingData/postQueries";
 import { getMenuBySlug } from "./state/fetchingData/menuQueries";
 import { creators as serverDataActions } from "./state/serverData/serverDataDuck";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
@@ -53,9 +53,10 @@ function App() {
           <Header />
             <Switch>
                 <Route path="/" exact> <Content /></Route>
-                <Route exact path="/category/:id" exact><Content /></Route>
+                <Route exact path="/category/:id"><Content /></Route>
                 <Route exact path="/post/:id"><SinglePost /></Route>
-                <Route exact path="/tag/:id" exact><Content /></Route>
+                <Route exact path="/tag/:id"><Content /></Route>
+                <Route path="/search"><SearchPage /></Route>
             </Switch>
           <Footer />
         </Router>

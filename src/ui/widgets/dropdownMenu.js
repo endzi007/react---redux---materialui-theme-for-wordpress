@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { makeStyles, Link, Typography } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 const styles = makeStyles(theme =>({
     menuBar: {
@@ -31,11 +32,17 @@ const styles = makeStyles(theme =>({
     },
     listItem: (props)=>({
         display: "inline-block",
-        padding: "5px 10px",
+        padding: "5px 20px",
+        boxSizing: "border-box",
+        "&:hover":{
+            backgroundColor: theme.palette.primary.light,
+            cursor: "pointer"
+        },
         "& :nth-child(1)":{
             display: props.show? "block": "none"
             },
         "& ul":{
+            boxSizing: "border-box",
             display: "block",
             top: props.dropdown? "0": "100%",
             right: props.dropdown? "100%": "0",
@@ -44,6 +51,7 @@ const styles = makeStyles(theme =>({
             boxSizing: "border-box",
             backgroundColor: theme.palette.primary.main,
             color: theme.palette.primary.contrastText,
+            width: "100%"
         }
     }),
     navbarWrapper: {
@@ -74,7 +82,8 @@ export default (props)=>{
 const ListItem = (props)=>{
     const [ show, setShow ] = useState(false);
     const classes = styles({ show, dropdown: props.dropdown});
-    return <Link 
+    const history = useHistory();
+    return <Typography 
         className={classes.listItem} 
         style={{position: "relative"}} 
         color="inherit" 
@@ -86,16 +95,21 @@ const ListItem = (props)=>{
         onMouseLeave={()=>{
             setShow(false);
         }}
-        href={props.url}>
+        onClick={(e)=>{
+            e.stopPropagation();
+            console.log("clicked", props.url)
+            history.push(props.url);
+        }}>
             {props.label} 
             <Dropdown parent={props.label} category={props.label}/>
-        </Link>
+        </Typography>
 }
 const Dropdown = (props)=>{
     const menuItems = useSelector(state => state.serverData.primaryMenu)
     const [ dropdownItems, setDropdownItems ] = useState([]);
     useEffect(()=>{
         let temp = menuItems.map((item)=>{
+            console.log(item);
             if(item.parent === props.category){
                 return <ListItem {...item} key={item.id} dropdown={true} />
             }

@@ -6,7 +6,7 @@ import SearchWidget from '../widgets/searchWidget';
 import PostWidget from '../widgets/postsWidget';
 import { useLocation } from 'react-router-dom';
 import { sendQueryRequest } from "../../state/fetchingData/queryClient";
-import { getPostsByCategoryName, getAllPosts } from "../../state/fetchingData/postQueries";
+import { searchQuery } from "../../state/fetchingData/postQueries";
 import { creators as actions } from "../../state/serverData/serverDataDuck";
 import { useDispatch } from 'react-redux';
 
@@ -20,12 +20,13 @@ const LeftSidebar = ()=>{
     const location = useLocation();
     const dispatch = useDispatch();
     const classes = styles();
-    const [ postDisplay, setPostDisplay ] = useState("displayPosts");
+    const [ postDisplay, setPostDisplay ] = useState("searchResults");
     useEffect(()=>{
-        sendQueryRequest([getPostsByCategoryName("title id excerpt databaseId featuredImage{sourceUrl}",`${location.pathname.substr(10, 100)}`)]).then((data)=>{
-            dispatch(actions.addDisplayPosts(data.data));
+        console.log(location, "location");
+        sendQueryRequest([searchQuery("title id excerpt databaseId featuredImage{sourceUrl}", `${location.search.substr(3)}`)]).then((data)=>{
+            dispatch(actions.addSearchResults(data.data));
         }).catch((e)=>{console.log(e)})
-    }, [location.pathname]);
+    }, [location.search]);
     return <Grid className={classes.root} container spacing={3}>
         <Grid item xs={12} sm={3}>
             <Grid container>
@@ -39,7 +40,7 @@ const LeftSidebar = ()=>{
             </Grid>
         </Grid>
         <Grid item xs={12} sm={9}>
-            <PostWidget displayCategory={postDisplay} />
+            <PostWidget title="Search result" displayCategory={postDisplay} />
         </Grid>
 
     </Grid>

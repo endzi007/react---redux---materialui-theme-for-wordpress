@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import CategoriesWidget from "../widgets/categoryList";
-import { makeStyles, Grid } from "@material-ui/core";
+import { makeStyles, Grid, useTheme } from "@material-ui/core";
 import PageWidget from '../widgets/pageList';
 import TagWidget from '../widgets/tagList';
-import PostWidget from '../widgets/postsWidget';
 import { useLocation } from 'react-router-dom';
-import { creators as actions } from "../../state/serverData/serverDataDuck";
 import { useDispatch } from 'react-redux';
 import { sendQueryRequest } from "../../state/fetchingData/queryClient";
 import { getPostByTitle } from '../../state/fetchingData/postQueries'
-
+import parse from "html-react-parser";
 const styles = makeStyles(theme => ({
     root:{
         padding: "20px"
+    },
+    contentDiv: {
+        "& *": {
+            textDecoration: "inherit",
+            color: "inherit",
+            fontSize: "inherit"
+        },
+        "& a":{
+            color: theme.palette.secondary.main,
+            fontSize: "bold"
+        }
+
     }
 }));
 
@@ -34,8 +44,8 @@ const SinglePost = ()=>{
         }).catch((e)=>{console.log(e)})
     }, [location.pathname]);
     return <Grid className={classes.root} container spacing={3}>
-        <Grid item xs={12} sm={9}>
-            <div dangerouslySetInnerHTML={{__html: postContent.content}}></div>
+        <Grid item xs={12} sm={9}>    
+        <div className={classes.contentDiv} dangerouslySetInnerHTML={{__html: postContent.content}}></div>
         </Grid>
         <Grid item xs={12} sm={3}>
             <Grid container>

@@ -9,6 +9,7 @@ export const types = {
     ADD_CURRENT_POST: `${duckName}/ADD_CURRENT_POST`,
     ADD_CURRENT_CATEGORY: `${duckName}/ADD_CURRENT_CATEGORY`,
     ADD_PRIMARY_MENU: `${duckName}/ADD_PRIMARY_MENU`,
+    ADD_SEARCH_RESULTS: `${duckName}/ADD_SEARCH_RESULTS`,
 }
 
 export const creators = {
@@ -18,7 +19,8 @@ export const creators = {
     addPages: (data)=>({type: types.ADD_PAGES, payload: data}),
     addCurrentPost: (data)=>({type: types.ADD_CURRENT_POST, payload: data}),
     addCurrentCategory: (data)=>({type: types.ADD_CURRENT_CATEGORY, payload: data}),
-    addPrimaryMenu: (data)=>({type: types.ADD_PRIMARY_MENU, payload: data})
+    addPrimaryMenu: (data)=>({type: types.ADD_PRIMARY_MENU, payload: data}),
+    addSearchResults: (data)=>({type: types.ADD_SEARCH_RESULTS, payload: data})
 }
 
 
@@ -29,7 +31,8 @@ export const defaultState = {
     displayPosts: [],
     currentPost: {},
     currentCategory: {},
-    primaryMenu: []
+    primaryMenu: [],
+    searchResults: []
 };
 
 
@@ -56,6 +59,9 @@ export default (state = defaultState, action )=>{
             return newState;
         case types.ADD_PRIMARY_MENU: 
             newState.primaryMenu = [...action.payload];
+            return newState;
+        case types.ADD_SEARCH_RESULTS:
+            newState.searchResults = action.payload;
             return newState;
         default: 
             return newState;

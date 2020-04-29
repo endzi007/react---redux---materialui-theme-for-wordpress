@@ -3,6 +3,7 @@ import { Grid, Typography, Link, makeStyles, Card, CardMedia, CardContent, CardA
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+
 const PostWidget = (props)=>{
     const posts = useSelector(store => store.serverData[props.displayCategory]);
     return <Grid container>

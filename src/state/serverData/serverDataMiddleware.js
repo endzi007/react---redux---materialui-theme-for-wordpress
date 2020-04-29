@@ -1,9 +1,8 @@
 import { types } from "./serverDataDuck";
-import _ from "underscore";
+import appSettings from "../../appSettings";
 
 //this middleware is used to normalize data before storing it into redux store
 export default (store)=>(next)=>(action)=>{
-    console.log(action.payload);
     let modifiedPayload = [];
     switch(action.type){
         case types.ADD_CATEGORIES:
@@ -33,7 +32,12 @@ export default (store)=>(next)=>(action)=>{
         case types.ADD_PRIMARY_MENU:
             modifiedPayload = flattenMenuItems(action.payload.menus.nodes[0].menuItems.nodes, [], null);
             action.payload = modifiedPayload;
-
+            break;
+        case types.ADD_SEARCH_RESULTS: 
+            modifiedPayload = action.payload.posts.nodes.map((node)=>{
+                return recursiveFlat(node);
+            });
+            action.payload = modifiedPayload;
             break;
         default: 
             break;
@@ -94,11 +98,20 @@ function normalizeMenuItems(menu){
 function flattenMenuItems(arr, newArr, parent){
     //loop trough arr
     arr.map((item)=>{
-        //check if item has key childItems
+        //form a relative url because graphql returns from wordpress full url with server domain name
+        // https://server.com/category/sem -> /category/sem
+        // wordpress menu item label should be the one that is set by wordpress because 
+        // with custom label this url will be invalid
+        item.url = item.url.replace(appSettings.serverUrl, "");
+        let isCategory = item.url.match(/category/)
+        let length = item.url.length>1? item.url.length-item.label.length: item.url.length;
+        item.url = item.url.substr(length-2, item.url.length);
+        item.url = isCategory !== null? "/category" + item.url: item.url;
         if("childItems" in item){
             newArr.push({...item, parent: parent});
             newArr.concat(flattenMenuItems(item["childItems"].nodes, newArr, item.label))
         } else {
+
             newArr.push({...item, parent: parent});
         }
     })

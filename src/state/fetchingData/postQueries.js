@@ -27,3 +27,10 @@ export const getPostByTitle = (fields, title)=> `
   }
 `;
 
+export const searchQuery = (fields, searchTerm)=> `
+  posts (where:{search: "${searchTerm}" }) {
+      nodes {
+        ${fields}
+      }
+  }
+`;
