@@ -26,31 +26,38 @@ const styles = makeStyles(theme =>({
             cursor: "pointer"
         }
     },
-    menuitem: {
-        display: "flex",
-        padding: theme.spacing(1)
-    },
     dropdownitem: {
         display: "flex"
     },
     listItem: (props)=>({
         display: "inline-block",
-        padding: "2px 5px",
+        padding: "5px 10px",
         "& :nth-child(1)":{
             display: props.show? "block": "none"
             },
         "& ul":{
             display: "block",
             top: props.dropdown? "0": "100%",
-            left: props.dropdown? "100%": "0",
+            right: props.dropdown? "100%": "0",
+            margin: 0,
+            padding: 0,
+            boxSizing: "border-box",
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.primary.contrastText,
         }
-    })
+    }),
+    navbarWrapper: {
+        display: "inline-flex",
+        marginRight: 0,
+        marginLeft: "auto"
+    }
 }))
 
 export default (props)=>{
     let menuItems = useSelector((store)=>{
         return store.serverData.primaryMenu
     });
+    const classes = styles();
     const [ displayMenu, setDisplayMenu ] = useState([]);
     useEffect(()=>{
         let temp = menuItems.map((item)=>{
@@ -61,7 +68,7 @@ export default (props)=>{
         setDisplayMenu(temp);
     }, [menuItems])
 
-    return <Typography component="ul"> {displayMenu}</Typography>
+    return <Typography className={classes.navbarWrapper} component="ul"> {displayMenu}</Typography>
 }
 
 const ListItem = (props)=>{
