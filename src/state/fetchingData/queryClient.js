@@ -2,7 +2,11 @@ import ApolloClient, { gql } from 'apollo-boost';
 import settings from '../../appSettings';
 
 const client = new ApolloClient({
-    uri: settings.api
+    uri: settings.api,
+    fetchOptions:{
+      mode: 'no-cors',
+      credentials: "include"
+    }
 });
 
 export default client;

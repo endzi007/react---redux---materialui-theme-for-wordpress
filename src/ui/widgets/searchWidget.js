@@ -1,9 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Grid, Typography, TextField} from "@material-ui/core";
-import { searchQuery } from "../../state/fetchingData/postQueries";
-import { sendQueryRequest } from "../../state/fetchingData/queryClient";
-import { creators as actions } from "../../state/serverData/serverDataDuck";
-import { useDispatch } from "react-redux";
 import { useHistory } from 'react-router-dom';
 const SearchWidget = ()=>{
     const [ searchTerm, setSearchTerm ] = useState("");

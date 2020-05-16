@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Typography, Link, makeStyles, Card, CardMedia, CardContent, CardActions, Button } from "@material-ui/core";
+import { Grid, Typography, makeStyles, Card, CardMedia, CardContent, Button } from "@material-ui/core";
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 

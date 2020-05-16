@@ -1,4 +1,4 @@
 export default {
-    api: "https://dedex-video-downloader.com/graphql",
-    serverUrl: "https://dedex-video-downloader.com"
+    api: "http://seminarski.byethost7.com/graphql",
+    serverUrl: "http://seminarski.byethost7.com"
 }

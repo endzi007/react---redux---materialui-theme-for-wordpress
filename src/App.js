@@ -30,7 +30,7 @@ function App() {
   const classes = styles();
   useEffect(()=>{
 
-     sendQueryRequest([getAllCategories("name id")]).then((data)=>{
+/*      sendQueryRequest([getAllCategories("name id")]).then((data)=>{
       dispatch(serverDataActions.addCategories(data.data));
     }) 
 
@@ -41,7 +41,7 @@ function App() {
   
     sendQueryRequest([getMenuBySlug("label url id", "primary-menu")]).then((data)=>{
       dispatch(serverDataActions.addPrimaryMenu(data.data))
-    }).catch(e => { console.log(e, "error")})
+    }).catch(e => { console.log(e, "error")}) */
 
   
 

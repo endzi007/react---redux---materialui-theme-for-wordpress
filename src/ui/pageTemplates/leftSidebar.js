@@ -23,6 +23,7 @@ const LeftSidebar = ()=>{
     const [ postDisplay, setPostDisplay ] = useState("displayPosts");
     useEffect(()=>{
         sendQueryRequest([getPostsByCategoryName("title id excerpt databaseId featuredImage{sourceUrl}",`${location.pathname.substr(10, 100)}`)]).then((data)=>{
+            console.log(data);
             dispatch(actions.addDisplayPosts(data.data));
         }).catch((e)=>{console.log(e)})
     }, [location.pathname]);
