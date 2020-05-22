@@ -1,4 +1,4 @@
 export default {
-    api: "http://seminarski.byethost7.com/graphql",
-    serverUrl: "http://seminarski.byethost7.com"
+    api: "http://seminarskitest.test/graphql",
+    serverUrl: "http://seminarskitest.test/"
 }

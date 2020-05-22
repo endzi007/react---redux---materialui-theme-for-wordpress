@@ -22,10 +22,10 @@ const LeftSidebar = ()=>{
     const classes = styles();
     const [ postDisplay, setPostDisplay ] = useState("displayPosts");
     useEffect(()=>{
-        sendQueryRequest([getPostsByCategoryName("title id excerpt databaseId featuredImage{sourceUrl}",`${location.pathname.substr(10, 100)}`)]).then((data)=>{
+/*         sendQueryRequest([getPostsByCategoryName("title id excerpt databaseId featuredImage{sourceUrl}",`${location.pathname.substr(10, 100)}`)]).then((data)=>{
             console.log(data);
             dispatch(actions.addDisplayPosts(data.data));
-        }).catch((e)=>{console.log(e)})
+        }).catch((e)=>{console.log(e)}) */
     }, [location.pathname]);
     return <Grid className={classes.root} container spacing={3}>
         <Grid item xs={12} sm={3}>

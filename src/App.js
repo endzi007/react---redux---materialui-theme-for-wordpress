@@ -29,22 +29,26 @@ function App() {
   const dispatch = useDispatch();
   const classes = styles();
   useEffect(()=>{
+/*     console.log(getAllCategories("name id"))
+   sendQueryRequest([getAllCategories("name id")]).then((data)=>{
+      console.log(data, "data");
+    dispatch(serverDataActions.addCategories(data.data));
+    })  */
+    fetch("http://seminarskitest.test/wp-json/wp/v2/pages").then((res)=>{
+        return res.json()
+    }).then((data)=>{
+        console.log(data);
+    })
 
-/*      sendQueryRequest([getAllCategories("name id")]).then((data)=>{
-      dispatch(serverDataActions.addCategories(data.data));
-    }) 
-
-    sendQueryRequest([getAllPages("title content id"), getAllTags("name")]).then((data)=>{
+/*     sendQueryRequest([getAllPages("title content id"), getAllTags("name")]).then((data)=>{
       dispatch(serverDataActions.addPages(data.data));
       dispatch(serverDataActions.addTags(data.data));
     }) 
   
     sendQueryRequest([getMenuBySlug("label url id", "primary-menu")]).then((data)=>{
       dispatch(serverDataActions.addPrimaryMenu(data.data))
-    }).catch(e => { console.log(e, "error")}) */
-
-  
-
+    }).catch(e => { console.log(e, "error")}) 
+ */
     }, []);
   return (
       <div className={classes.root}>
