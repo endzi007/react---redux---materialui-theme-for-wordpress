@@ -5,8 +5,8 @@ import PageWidget from '../widgets/pageList';
 import TagWidget from '../widgets/tagList';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { sendQueryRequest } from "../../state/fetchingData/queryClient";
-import { getPostByTitle } from '../../state/fetchingData/postQueries'
+import { sendQueryRequest } from "../../state/fetchingData/graphql/queryClient";
+import { getPostByTitle } from '../../state/fetchingData/graphql/postQueries'
 import parse from "html-react-parser";
 const styles = makeStyles(theme => ({
     root:{

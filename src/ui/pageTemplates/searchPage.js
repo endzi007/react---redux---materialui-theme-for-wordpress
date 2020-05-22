@@ -5,8 +5,8 @@ import PageWidget from '../widgets/pageList';
 import SearchWidget from '../widgets/searchWidget';
 import PostWidget from '../widgets/postsWidget';
 import { useLocation } from 'react-router-dom';
-import { sendQueryRequest } from "../../state/fetchingData/queryClient";
-import { searchQuery } from "../../state/fetchingData/postQueries";
+import { sendQueryRequest } from "../../state/fetchingData/graphql/queryClient";
+import { searchQuery } from "../../state/fetchingData/graphql/postQueries";
 import { creators as actions } from "../../state/serverData/serverDataDuck";
 import { useDispatch } from 'react-redux';
 

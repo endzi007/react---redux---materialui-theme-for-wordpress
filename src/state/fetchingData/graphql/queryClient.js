@@ -1,5 +1,5 @@
 import ApolloClient, { gql } from 'apollo-boost';
-import settings from '../../appSettings';
+import settings from '../../../appSettings';
 
 const client = new ApolloClient({
     uri: settings.api,
